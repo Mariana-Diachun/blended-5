@@ -1,50 +1,32 @@
-import React, { useState } from 'react';
-import toast from 'react-hot-toast';
-import { BiMailSend } from 'react-icons/bi';
-import styles from './Form.module.css';
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { BiMailSend } from "react-icons/bi";
+import styles from "./Form.module.css";
 
 export const Form = () => {
-  const [author, setAuthor] = useState('');
-  const [content, setContent] = useState('');
+  const { register, handleSubmit } = useForm();
 
-  const onHandleChange = (e) => {
-    const { name, value } = e.target;
-    console.log(name, value);
-  };
-
-  const onHandleSubmit = (e) => {
-    e.preventDefault();
-
-    setAuthor('');
-    setContent('');
-  };
+  const onSubmit = (data) => console.log(data);
 
   return (
     <div className={styles.formWrapper}>
-      <form className={styles.form} onSubmit={onHandleSubmit}>
+      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <label className={styles.label}>
           <span className={styles.labelName}>Full name</span>
-          <input
-            type='text'
-            name='name'
-            className={styles.input}
-            value={author}
-            onChange={onHandleChange}
-          />
+          <input className={styles.input} type="text" {...register("name")} />
         </label>
 
         <label className={styles.label}>
           <span className={styles.labelName}>Your comment</span>
           <textarea
             className={styles.input}
-            name='text'
-            rows='5'
-            value={content}
-            onChange={onHandleChange}
+            rows="5"
+            {...register("text")}
           ></textarea>
         </label>
 
-        <button className={styles.formBtn}>
+        <button className={styles.formBtn} type="submit">
           <BiMailSend className={styles.icon} />
           Send
         </button>
